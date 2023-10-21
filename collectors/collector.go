@@ -21,25 +21,19 @@ func CreateCollector(url string) *colly.Collector {
 
 	c.OnRequest(func(r *colly.Request) {
 		r.Headers.Set("User-Agent", "1 Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148")
-		log.Println("Visiting: ", r.URL)
+		log.Println("Requested: ", r.URL)
 	})
 
 	c.OnResponse(func(r *colly.Response) {
 		log.Println("Page visited: ", r.Request.URL)
 	})
 
-	// c.OnHTML("a", func(e *colly.HTMLElement) {
-	// 	// printing all URLs associated with the a links in the page
-	// 	log.Println("%v", e.Attr("title"))
-	// 	//log.Println("%v", e.Attr("href"))
-	// })
-
 	c.OnError(func(_ *colly.Response, err error) {
 		log.Println("Something went wrong: ", err)
 	})
 
 	c.OnScraped(func(r *colly.Response) {
-		log.Println(r.Request.URL, " scraped!")
+		log.Println("Response: ", r.Request.URL, " scraped successfully")
 	})
 
 	return c

@@ -1,8 +1,6 @@
 package collector
 
 import (
-	"log"
-
 	"github.com/gocolly/colly"
 )
 
@@ -10,11 +8,24 @@ type ChampionshipCollector struct {
 	Url string
 }
 
+type TeamPage struct {
+	Name string
+	Url  string
+}
+
 func (c ChampionshipCollector) Collect() {
 	collector := CreateCollector(c.Url)
-	collector.OnHTML("a", func(e *colly.HTMLElement) {
+	// teamPages := [20]TeamPage{}
+	collector.OnHTML("td.hauptlink", func(e *colly.HTMLElement) {
 		// printing all URLs associated with the a links in the page
-		log.Println("%v", e.Attr("href"))
+		// if strings.Contains(e.ChildAttr("a", "href"), "verein") {
+		// 	log.Println("value found: %v", e.ChildAttr("a", "title"), e.ChildAttr("a", "href"))
+		// 	teamPage := TeamPage{e.ChildAttr("a", "title"), e.ChildAttr("a", "href")}
+		// 	for i:=0; i < 20; i++{
+		// 		if(len)
+		// 	}
+		// }
+
 	})
 
 	collector.Visit(c.Url)
@@ -22,5 +33,4 @@ func (c ChampionshipCollector) Collect() {
 func CollectChampionship() {
 	var championshipCollector CollectorInterface = ChampionshipCollector{CHAMPIONSHIP_PAGE_URL}
 	championshipCollector.Collect()
-
 }
