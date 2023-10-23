@@ -31,11 +31,6 @@ func (c ChampionshipCollector) Collect() {
 	})
 
 	collector.Visit(c.Url)
-	// write test for this instead of the code below
-	// for i := 0; i < 20; i++ {
-	// 	log.Println("ARRAY:")
-	// 	log.Println(i, ": ", teamPages[i])
-	// }
 }
 func CollectChampionship() {
 	var championshipCollector CollectorInterface = ChampionshipCollector{CHAMPIONSHIP_PAGE_URL}
