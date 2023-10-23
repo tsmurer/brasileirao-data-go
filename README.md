@@ -1,3 +1,3 @@
 # brasileirao-data-go
 
-ETL de dados do brasileirão serie A com Golang e Colly
+ETL using Golang and colly for data from Brazilian Championship A Series (Brasileirão Serie A) at Transfermarkt.
