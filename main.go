@@ -9,6 +9,7 @@ import (
 func main() {
 	listOfTeamLinks := collector.CollectChampionship()
 	teams := []collector.Team{}
+	//teamChannel := make(chan collector.Team)
 	for _, teamLink := range listOfTeamLinks {
 		team := collector.CollectClub(teamLink)
 		teams = append(teams, team)
