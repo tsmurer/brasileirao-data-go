@@ -8,17 +8,12 @@ import (
 
 type ChampionshipCollectorInterface interface {
 	CollectorInterface
-	GetTeamPages() [20]TeamPage
-}
-
-type TeamPage struct {
-	Name string
-	Url  string
+	GetTeamPages() [20]string
 }
 
 type ChampionshipCollector struct {
 	Url       string
-	TeamPages [20]TeamPage
+	TeamPages [20]string
 }
 
 func (c *ChampionshipCollector) Collect() {
@@ -27,11 +22,8 @@ func (c *ChampionshipCollector) Collect() {
 		index := 0
 		e.ForEach("tbody tr", func(_ int, el *colly.HTMLElement) {
 			if index < 20 {
-				name := el.ChildAttr("td:nth-child(2) a", "title")
 				link := el.ChildAttr("td:nth-child(2) a", "href")
-				c.TeamPages[index] = TeamPage{
-					name, link,
-				}
+				c.TeamPages[index] = link
 				index++
 			}
 		})
@@ -39,15 +31,13 @@ func (c *ChampionshipCollector) Collect() {
 	collector.Visit(c.Url)
 }
 
-func (c ChampionshipCollector) GetTeamPages() [20]TeamPage {
+func (c ChampionshipCollector) GetTeamPages() [20]string {
 	return c.TeamPages
 }
 
-func CollectChampionship() {
-	var championshipCollector ChampionshipCollectorInterface = &ChampionshipCollector{CHAMPIONSHIP_PAGE_URL, [20]TeamPage{}}
+func CollectChampionship() [20]string {
+	var championshipCollector ChampionshipCollectorInterface = &ChampionshipCollector{CHAMPIONSHIP_PAGE_URL, [20]string{}}
 	championshipCollector.Collect()
 	log.Println("CollectChampionship()")
-	for _, page := range championshipCollector.GetTeamPages() {
-		log.Println(page)
-	}
+	return championshipCollector.GetTeamPages()
 }

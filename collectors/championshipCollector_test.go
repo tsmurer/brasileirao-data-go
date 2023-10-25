@@ -17,7 +17,7 @@ func TestChampionshipCollector_Collect(t *testing.T) {
 
 	htmlData, err := embeddedHTML.ReadFile("championshipPage.html")
 	if err != nil {
-		t.Fatalf("Error reading embedded file: %v", err)
+		t.Fatalf("Error reading embedded file: %s", err)
 	}
 
 	// Create a test HTTP server to serve the HTML content
@@ -27,12 +27,12 @@ func TestChampionshipCollector_Collect(t *testing.T) {
 	}))
 	defer server.Close()
 
-	collector := &ChampionshipCollector{Url: server.URL, TeamPages: [20]TeamPage{}}
+	collector := &ChampionshipCollector{Url: server.URL, TeamPages: [20]string{}}
 	collector.Collect()
 
-	for _, page := range collector.TeamPages {
-		if page.Name == "" || page.Url == "" {
-			t.Errorf("Expected all indexes populated but found: { Name: %v, Url: %v }", page.Name, page.Url)
+	for _, link := range collector.TeamPages {
+		if link == "" {
+			t.Errorf("Expected all indexes populated but found: %s", link)
 		}
 	}
 }
@@ -41,7 +41,7 @@ func TestChampionshipCollector_Collect(t *testing.T) {
 
 func TestChampionshipCollector_GetTeamPages(t *testing.T) {
 	collector := ChampionshipCollector{
-		TeamPages: [20]TeamPage{ /* Initialize with your test data */ },
+		TeamPages: [20]string{},
 	}
 	result := collector.GetTeamPages()
 	if len(result) != 20 {
