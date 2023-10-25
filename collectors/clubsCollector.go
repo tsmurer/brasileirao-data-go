@@ -37,7 +37,7 @@ type Match struct {
 	HomeTeamScore string
 }
 
-func (c ClubCollector) Collect() {
+func (c *ClubCollector) Collect() {
 	collector := CreateCollector(c.Url)
 	// wanted data:
 	// name
@@ -59,6 +59,7 @@ func (c ClubCollector) Collect() {
 			HomeTeamScore: strings.TrimSpace(e.ChildText("td.zentriert.no-border-links")),
 		}
 		team.Matches = append(team.Matches, match)
+		c.Team = team
 	})
 
 	// Navigate to the URL you want to scrape
@@ -68,18 +69,6 @@ func (c ClubCollector) Collect() {
 		fmt.Println("Error:", err)
 	}
 
-	// Print the extracted team and match data
-	fmt.Printf("Team Name: %s\n", team.Name)
-	fmt.Printf("Scored Points: %s\n", team.ScoredPoints)
-
-	fmt.Println("Matches:")
-	for i, match := range team.Matches {
-		fmt.Printf("Match %d\n", i+1)
-		fmt.Printf("Away Team: %s\n", match.AwayTeamName)
-		fmt.Printf("Home Team: %s\n", match.HomeTeamName)
-		fmt.Printf("Away Team Score: %s\n", match.AwayTeamScore)
-		fmt.Printf("Home Team Score: %s\n", match.HomeTeamScore)
-	}
 }
 
 func (c ClubCollector) GetTeam() Team {
